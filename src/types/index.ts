@@ -24,13 +24,21 @@ export interface IBuyer {
 
 export type TPayment = 'card' | 'cash' | '';
 
-//тип для объекта, который приложение получает с сервера или передаёт на него.
 
-export type Data = {
-    total?: number;
+// тип для объекта, который приложение получает с сервера
+
+export type OrederResponse = {
+    total: number;
     items: IProduct[];
-    payment?: TPayment;
-    address?: string;
-    email?: string;
-    phone?: string;
+}
+
+// тип для объекта который приложение передает на сервер
+
+export type OrderRequest = {
+    total: number;
+    items: string[];
+    payment: TPayment;
+    address: string;
+    email: string;
+    phone: string;
 }

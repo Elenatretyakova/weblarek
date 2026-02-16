@@ -1,14 +1,14 @@
 import './scss/styles.scss';
 
-import { Catalog } from './components/base/Models/Catalog';
+import { Catalog } from './components/Models/Catalog';
 
-import { Cart } from './components/base/Models/Cart';
+import { Cart } from './components/Models/Cart';
 
-import { Buyer } from './components/base/Models/Buyer';
+import { Buyer } from './components/Models/Buyer';
 
 import { apiProducts } from './utils/data'
 
-import { Communication } from './components/base/Models/Communication';
+import { Communication } from './components/Models/Communication';
 
 import { Api } from './components/base/Api';
 
@@ -19,7 +19,7 @@ const productsModel = new Catalog();
 
 productsModel.setProducts(apiProducts.items);
 
-console.log(productsModel.getProducts());
+console.log('Массив товаров из каталога: ', productsModel.getProducts());
 
 console.log(productsModel.getProductById('412bcf81-7e75-4e70-bdb9-d3c73c9803b7'));
 

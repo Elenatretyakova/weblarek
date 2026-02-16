@@ -1,4 +1,4 @@
-import { IBuyer, TPayment } from "../../../types";
+import { IBuyer, TPayment } from "../../types";
 
 export class Buyer {
   private payment: TPayment;
@@ -56,7 +56,7 @@ export class Buyer {
   // валидация данных.
 
   checkForm() {
-    const errors: any = {};
+    const errors: Partial<Record<keyof IBuyer, string>> = {};
 
     if (this.payment === "") {
       errors.payment = "Не выбран вид оплаты";
