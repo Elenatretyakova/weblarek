@@ -1,4 +1,10 @@
-import { IApi, OrederResponse, IProduct } from "../../types";
+import {
+  IApi,
+  PoductsResponse,
+  OrderRequest,
+  OrderResponse,
+  IProduct,
+} from "../../types";
 
 export class Communication {
   private api: IApi;
@@ -8,11 +14,12 @@ export class Communication {
   }
   //получение списка товаров с сервера
   async getProducts(): Promise<IProduct[]> {
-    const serverdata: OrederResponse = await this.api.get<OrederResponse>("/product");
+    const serverdata: PoductsResponse =
+      await this.api.get<PoductsResponse>("/product");
     return serverdata.items;
   }
   // отпрвка данных на сервер
-  async createOrder(order: OrederResponse): Promise<{id: string; total: number}> {
-    return await this.api.post<{id: string; total: number}>("/order", order);
+  async createOrder(data: OrderRequest): Promise<OrderResponse> {
+    return await this.api.post<OrderResponse>("/order", data);
   }
 }
