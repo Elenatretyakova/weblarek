@@ -1,12 +1,15 @@
 import { IProduct } from "../../types";
+import { EventEmitter } from "../base/Events";
 
 export class Catalog {
   private products: IProduct[];
   private selectedProduct: IProduct | null;
+  private events: EventEmitter;
 
-  constructor() {
+  constructor(events: EventEmitter) {
     this.products = [];
     this.selectedProduct = null;
+    this.events = events;
   }
 
   //Методы:
@@ -15,6 +18,7 @@ export class Catalog {
 
   setProducts(products: IProduct[]): void {
     this.products = products;
+    this.events.emit("catalog:changed");
   }
 
   //получение массива товаров из модели;
@@ -33,6 +37,7 @@ export class Catalog {
 
   setSelectedProduct(product: IProduct): void {
     this.selectedProduct = product;
+    this.events.emit("product:selected", product);
   }
 
   // получение товара для подробного отображения.

@@ -51,3 +51,27 @@ export type OrderResponse = {
   id: string;
   total: number;
 };
+
+export interface ICardActions {
+  onClick?: () => void;
+}
+
+export interface IBasketActions {
+  onClick?: () => void;
+}
+
+export interface IFormPaymentActions {
+  onPaymentSelect?: (payment: TPayment) => void;
+  onAddressInput?: (address: string) => void;
+  onSubmit?: () => void;
+}
+
+export interface IFormContactsActions {
+  onEmailInput?: (email: string) => void;
+  onPhoneInput?: (phone: string) => void;
+  onSubmit?: () => void;
+}
+
+export interface ISuccessActions {
+  onClick?: () => void;
+}

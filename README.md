@@ -246,6 +246,198 @@ type TPayment = 'card' | 'cash' | '';
 
 `constructor (api: IApi)` - объект, соответствующий интерфейсу IApi.
 
-`async getProducts(): Promise<IProduct[]>` - для получения массива товаров с сервера.
+`getProducts(): Promise<IProduct[]>` - для получения массива товаров с сервера.
 
-`createOrder(order: Data): Promise<Data>` - для отправки на сервер данных о покупателе и выбранных товарах.
+`createOrder(data: OrderRequest): Promise<OrderResponse>` - для отправки на сервер данных о покупателе и выбранных товарах.
+
+## Слой представления
+Классы отвечают за отображение элементов на странице и наследуют базовый класс Component.
+
+### Класс Header
+Отвечает за отображение иконки корзины со счетчиком товаров.
+
+Поля:
+`basketButton: HTMLButtonElement` - кнопка открытия корзины.
+`counterElement: HTMLElement` - счетчик товаров.
+
+Конструктор:
+`constructor(container: HTMLElement, protected events: IEvents,)` -  в конструктор передается корневой элемент для поиска дочерних элементов и экземпляр брокера событий.
+
+Методы:
+`set counter(value: number)` - обновляет счетчик товаров.
+
+
+### Класс Gallery
+Класс отвечает за отображение списка товаров на главной странице.
+
+Поля:
+`catalogElement: HTMLElement` - контейнер для карточек с товарами
+
+Конструктор:
+`constructor(container: HTMLElement)` - в конструктор передается корневой элемент для поиска дочерних элементов.
+
+Методы:
+`set catalog(items: HTMLElement[])` - полчуает массив карточек
+
+### Класс Modal
+Класс отвечает за отображение модального окна
+
+Поля:
+`contentElement: HTMLElement` - контейнер для контента модального окна
+`buttonClose: HTMLButtonElement` - кнопка "закрыть"
+
+Конструктор:
+` constructor(container: HTMLElement,protected events: IEvents)` - в конструктор передается корневой элемент для поиска дочерних элементов и экземпляр брокера событий.
+
+
+Методы:
+`set content(items: HTMLElement)` - получает элементы для отображения в модальном окне.
+`set visible(value: boolean)` - добавляет/удаляет модификатор modal_active.
+
+### Класс Succes
+Поля:
+`titleElement: HTMLElement` - заголовок окна.
+`descriptionElement: HTMLElement` - описание с суммой товаров.
+`protected buttonElement: HTMLButtonElement;` - кнопка завершения заказа.
+
+Конструктор:
+`constructor(container: HTMLElement,protected actions?: ISuccessActions)` -  принимает корневой элемент и необязательный объект с обработчиками.
+
+Методы:
+`set title(value: string)` - устанавливает текст заголовка.
+`set description(value: number)` - устанавливает текст с суммой заказа.
+`set button(value: string)` - устанавливает текст кнопки.
+
+### Класс Card
+Общий класс для всех карточек
+Поля:
+`titleElement: HTMLElement` - заголовок карточки.
+`priceElement: HTMLElement` - цена товара.
+
+Конструктор:
+`constructor(container: HTMLElement)` - принимает корневой элемент для поиска дочерних элементов.
+
+Методы:
+`set title(value:string)` - устанавливает название товара.
+`set price(value: number | null)` - устанавлиает цену.
+
+### Класс CardBasket
+Карточка товара в корзине, наследует класс Card.
+
+Поля
+`indexElement: HTMLElement` - порядковый номре в корзине.
+`buttonElement: HTMLButtonElement` -  кнопка удаленияя товара.
+
+Конструктор:
+`constructor(container: HTMLElement,  actions?: ICardActions)` - принимает корневой элемент и необязательный объект с обработчиками, навешивает click на кнопку удаления.
+  
+Методы:
+`set index(value: number)` - устанавливает порядковый номер товара в корзине.
+`set button(value: string)` - текст кнопки.
+
+### Класс  CardDetails 
+Общий класс для карточек для отображения на странице, с категорией и изображением, наследует класс Card.
+
+Поля:
+`categoryElement: HTMLElement` - категория товара.
+`imageElement: HTMLImageElement` - картинка товара.
+
+Конструктор:
+`constructor(container: HTMLElement)` - принимает корневой элемент для поиска дочерних элементов.
+
+Методы:
+`set category(value: string)` - устанавливает категорию товара.
+`set image(value:string)` - добавляет картинку.
+
+### Класс CardPreview
+Карточка для детального просмора, наследует класс CardDetails.
+
+Поля:
+`descriptionElement: HTMLElement` - описание товара.
+`protected buttonElement: HTMLButtonElement` - кнопка добалвения или удаления товара в корзину.
+
+Конструктор:
+`constructor(container: HTMLElement, actions?: ICardActions)` - принимает корневой элемент и необязательный объект с обработчиками.
+
+Методы:
+`set description(value: string)` - добавляет описание товара.
+
+### Класс CardCatalog
+Карточка товара в католог, наследует класс CardDetails.
+
+Конструктор:
+`constructor(container: HTMLElement, actions?: ICardActions)` - принимает корневой элемент и необязательный объект с обработчиками, навешивает click на кнопку.
+
+### Класс Basket
+Поля:
+`titleElement: HTMLElement` - заголовок корзины;
+`buttonElement: HTMLButtonElement` - кнопка оформить;
+`priceElement: HTMLElement` - сумма заказа;
+`listElement: HTMLElement` - контейнер списка товаров
+
+Конструктор: 
+`constructor(container: HTMLElement, actions?: IBasketActions )` - принимает корневой элемент и необязательный объект с обработчиками, навешивает click на кнопку.
+
+
+Методы:
+`set title(value: string)` - устанавливает заголовок
+`set button(value: string)` - текст кнопки
+`set buttonDisabled(value: boolean)` - блокирует и снимает блокировку с кнопки
+`set price(value: number)` - устанавливает сумму товаров
+`set items(value: HTMLElement[])` - получает список карточек
+
+### Класс Form
+Общий класс для отображения формы для оформления заказа
+
+Поля:
+`errorsElement: HTMLElement` - контейнер для сообщения об ощибке
+`protected submitButtonEl: HTMLButtonElement` - кнопка отправки формы
+
+Конструктор:
+`constructor(container: HTMLElement)` - принимает корневой элемент для поиска дочерних элементов.
+
+Методы:
+`set errors(value: string)` - текст ошибки
+`set submitDisabled(value: boolean)` - добавляет блокировку
+
+### Класс FormPayment
+Класс для формы с выбором оплаты и полем для указания адреса
+
+Поля:
+`cardButton: HTMLButtonElement`- кнопка для способа оплаты картой
+`cashButton: HTMLButtonElement` - кнопка для способа оплаты наличными
+`addressInput: HTMLInputElement` - поле для указания адреса
+
+Конструктор:
+`constructor(container: HTMLElement,  actions?: IFormPaymentActions)` - принимает корневой элемент для поиска дочерних элементов, добавляет обработчики
+
+Методы:
+`set payment(value: TPayment)` - выделяет выбранный тип оплаты
+`set address(value: string)` - добавляет адрес
+
+### Класс FormContacts
+Класс для отображения формы с полями ввода почты и телефона
+
+Поля:
+`emailInput: HTMLInputElement` - поле для указания электронной почты
+`phoneInput: HTMLInputElement` - поле ждя указания телефона
+
+Конструктор:
+`constructor(container: HTMLElement, actions?: IFormContactsActions)` - принимает корневой элемент для поиска дочерних элементов, добавляет обработчики
+
+Методы:
+`set email(value: string)` - заполняет емэйл
+`set phone(value: string)` - заполняет телефон
+
+## Слой Presenter
+Код написан в файле main.js и отвечает за взаимодейстие представления и данных, обработку событий и логику.
+Список событий:
+`catalog:changed` — создаёт карточки для каждого товара, рендерит их в Gallery.
+`product:selected` — при клике на карточку создаёт CardPreview с данными товара, устанавливает текст кнопки («Недоступно» / «Удалить из корзины»), показывает модальное окно.
+`cart:changed` — при изменении корзины обновляет счётчик товаров в Header.
+`modal:close` — при клике на крестик или вне области модального окна скрывает его.
+`basket:open` — открывает корзину: если пусто — показывает сообщение и блокирует кнопку, если есть товары — рендерит список и общую сумму.
+`order:open` — очищает данные покупателя и открывает форму для заполнения адреса и выбора способа оплаты.
+`order:contacts` — при успешной валидации первой формы открывает форму с почтой и телефоном.
+`order:success` — после успешной отправки заказа на сервер показывает экран завершения покупки, очищает корзину и данные покупателя.
+

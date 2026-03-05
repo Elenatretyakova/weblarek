@@ -1,10 +1,13 @@
 import { IProduct } from "../../types";
+import { EventEmitter } from "../base/Events";
 
 export class Cart {
   private items: IProduct[];
+  private events: EventEmitter;
 
-  constructor() {
+  constructor(events: EventEmitter) {
     this.items = [];
+    this.events = events;
   }
 
   //Методы:
@@ -18,19 +21,24 @@ export class Cart {
   //добавление товара, который был получен в параметре, в массив корзины;
 
   addItem(product: IProduct): void {
-    this.items.push(product);
+    if (!this.checkHasItem(product.id)) {
+      this.items.push(product);
+      this.events.emit("cart:changed");
+    }
   }
 
   //удаление товара, полученного в параметре из массива корзины;
 
   deleteItem(product: IProduct): void {
     this.items = this.items.filter((item) => item.id !== product.id);
+    this.events.emit("cart:changed");
   }
 
   //очистка корзины;
 
   clearCart(): void {
     this.items = [];
+    this.events.emit("cart:changed");
   }
 
   //получение стоимости всех товаров в корзине;

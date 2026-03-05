@@ -1,16 +1,19 @@
 import { IBuyer, TPayment } from "../../types";
+import { EventEmitter } from "../base/Events";
 
 export class Buyer {
   private payment: TPayment;
   private address: string;
   private email: string;
   private phone: string;
+  private events: EventEmitter;
 
-  constructor() {
+  constructor(events: EventEmitter) {
     this.payment = "";
     this.address = "";
     this.email = "";
     this.phone = "";
+    this.events = events;
   }
 
   // Методы:
@@ -19,18 +22,22 @@ export class Buyer {
 
   setPayment(payment: TPayment): void {
     this.payment = payment;
+    this.events.emit("buyer:changed");
   }
 
   setAddress(address: string): void {
     this.address = address;
+    this.events.emit("buyer:changed");
   }
 
   setEmail(email: string): void {
     this.email = email;
+    this.events.emit("buyer:changed");
   }
 
   setPhone(phone: string): void {
     this.phone = phone;
+    this.events.emit("buyer:changed");
   }
 
   //получение всех данных покупателя;
@@ -51,6 +58,7 @@ export class Buyer {
     this.address = "";
     this.email = "";
     this.phone = "";
+    this.events.emit("buyer:changed");
   }
 
   // валидация данных.
@@ -62,7 +70,7 @@ export class Buyer {
       errors.payment = "Не выбран вид оплаты";
     }
     if (this.address === "") {
-      errors.address = "Укажите адрес";
+      errors.address = "Необходимо указать адрес";
     }
     if (this.email === "") {
       errors.email = "Укажите адрес электронной почты";
