@@ -42,8 +42,4 @@ export class Success extends Component<ISuccess> {
   set description(value: number) {
     this.descriptionElement.textContent = `Списано ${value} синапсов`;
   }
-
-  set button(value: string) {
-    this.buttonElement.textContent = value;
-  }
 }

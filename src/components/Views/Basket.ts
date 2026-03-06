@@ -36,6 +36,7 @@ export class Basket extends Component<IBasket> {
     if (actions?.onClick) {
       this.buttonElement.addEventListener("click", actions.onClick);
     }
+    this.buttonElement.disabled = true;
   }
 
   set title(value: string) {
@@ -56,6 +57,6 @@ export class Basket extends Component<IBasket> {
 
   set items(value: HTMLElement[]) {
     this.listElement.innerHTML = "";
-    value.forEach((item) => this.listElement.appendChild(item));
+    this.listElement.replaceChildren(...value);
   }
 }

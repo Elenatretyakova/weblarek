@@ -26,11 +26,11 @@ export class Modal extends Component<IModal> {
       this.container,
     );
     this.buttonClose.addEventListener("click", () => {
-      this.events.emit("modal:close");
+      this.visible = false;
     });
     this.container.addEventListener("click", (e: MouseEvent) => {
       if (e.target === this.container) {
-        this.events.emit("modal:close");
+        this.visible = false;
       }
     });
   }

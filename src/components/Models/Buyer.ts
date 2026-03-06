@@ -1,14 +1,14 @@
 import { IBuyer, TPayment } from "../../types";
-import { EventEmitter } from "../base/Events";
+import { IEvents } from "../base/Events";
 
 export class Buyer {
   private payment: TPayment;
   private address: string;
   private email: string;
   private phone: string;
-  private events: EventEmitter;
+  private events: IEvents;
 
-  constructor(events: EventEmitter) {
+  constructor(events: IEvents) {
     this.payment = "";
     this.address = "";
     this.email = "";
@@ -79,10 +79,7 @@ export class Buyer {
       errors.phone = "Укажите номер телефона";
     }
 
-    const isValid = Object.keys(errors).length === 0;
-
     return {
-      isValid,
       errors,
     };
   }
